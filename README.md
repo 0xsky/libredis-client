@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     bool bRet = redisclient.ConnectRedis("127.0.0.1", 6379, 4);
 
     RedisResult result;
-    redisclient.RedisCommand(result, "set %s %s", "key", "hello");
+    redisclient.Command(result, "set %s %s", "key", "hello");
     
     printf("type:%d integer:%lld str:%s \r\n",
         result.type(), result.integer(), result.str());
