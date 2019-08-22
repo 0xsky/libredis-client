@@ -42,7 +42,7 @@ sudo make install
 
 Usage
 ```C++
-#Accessing redis or  redis Cluster using the xRedisClusterClient class
+#Accessing redis or  redis Cluster 
 
 #include "libredis-client.h"
 int main(int argc, char **argv) {
@@ -64,9 +64,7 @@ int main(int argc, char **argv) {
 
 
 
-
 <p>blog: <a href="http://www.0xsky.com/">xSky's Blog</a>
 <p>xRedis QQ Group: 190107312
-<img src='https://github.com/0xsky/xredis/blob/master/donate.png' alt='捐赠作者' height='120px'>
 
 
