@@ -7,9 +7,9 @@
 C++ Redis client, support redis cluster, connection pool.
 
 **Features:**
-* suppert redis cluster, no moev needed
+* suppert redis cluster, no data move needed
 * connection pool
-* thread safety
+* thread safe
 * suport linux and windows
 
 中文版说明文档点[这里](https://github.com/0xsky/libredis-client/blob/master/README-cn.md)
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
     RedisClient redisclient;
     # Connect to REDIS and establish a connection pool 
     # If this node is a member of the REDIS cluster, 
-    # a connection pool is automatically established for each primary node in the cluster.
+    # a connection pool is automatically established for each master node.
     bool bRet = redisclient.ConnectRedis("127.0.0.1", 6379, 4);
 
     RedisResult result;
