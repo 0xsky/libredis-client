@@ -83,7 +83,7 @@ void FreeReply(const redisReply *reply){
     }
 }
 
-static int str2Vect(const char* pSrc, vector<string> &vDest, const char *pSep = ",") {
+static int str2Vect(const char* pSrc, std::vector<std::string> &vDest, const char *pSep = ",") {
     if (NULL == pSrc) {
         return -1;
     }
@@ -250,7 +250,7 @@ bool RedisClient::ConnectRedis(const char *host, uint32_t port, uint32_t poolsiz
         return false;
     }
     
-    vector<string> vlines;
+    std::vector<std::string> vlines;
     redisReply *redis_reply = (redisReply*)redisCommand(redis_ctx, "CLUSTER NODES");
     if( (NULL==redis_reply) ||(NULL==redis_reply->str)) {
         if(redis_reply) {
@@ -267,7 +267,7 @@ bool RedisClient::ConnectRedis(const char *host, uint32_t port, uint32_t poolsiz
         NodeInfo node;
         node.strinfo = vlines[i];
 
-        vector<string> nodeinfo;
+        std::vector<std::string> nodeinfo;
         str2Vect(node.strinfo.c_str(), nodeinfo, " ");
         for (size_t k = 0; k < nodeinfo.size(); ++k) {
             printf("%lu : %s \r\n", k, nodeinfo[k].c_str());
@@ -474,8 +474,8 @@ bool RedisClient::RedisCommandArgv(const VSTRING& vDataIn, RedisResult &result){
         return false;
     }
 
-    vector<const char*> argv(vDataIn.size());
-    vector<size_t> argvlen(vDataIn.size());
+    std::vector<const char*> argv(vDataIn.size());
+    std::vector<size_t> argvlen(vDataIn.size());
     unsigned int j = 0;
     for (VSTRING::const_iterator i = vDataIn.begin(); i != vDataIn.end(); ++i, ++j) {
         argv[j] = i->c_str(), argvlen[j] = i->size();

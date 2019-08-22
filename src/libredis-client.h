@@ -9,7 +9,6 @@
 #include <vector>
 #include "hiredis.h"
 
-using namespace std;
 
 #define MAX_REDIS_POOLSIZE 64
 #define MAX_TIME_OUT       5
@@ -139,7 +138,7 @@ private:
                 EndSlot = atoi(EndSlotStr.c_str());
                 StartSlot = atoi(SlotString.substr(0, BarPos).c_str());
             }
-            mSlots.push_back(make_pair(StartSlot, EndSlot));
+            mSlots.push_back(std::make_pair(StartSlot, EndSlot));
         }
     };
 
