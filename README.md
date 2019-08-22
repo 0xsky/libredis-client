@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
     # Connect to REDIS and establish a connection pool 
     # If this node is a member of the REDIS cluster, 
     # a connection pool is automatically established for each master node.
-    bool bRet = redisclient.ConnectRedis("127.0.0.1", 6379, 4);
+    redisclient.ConnectRedis("127.0.0.1", 6379, 4);
 
     RedisResult result;
     redisclient.Command(result, "set %s %s", "key", "hello");
