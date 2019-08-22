@@ -78,5 +78,8 @@ private:
 
 #define XLOCK(T) CLockUser lock(T)
 
+
+
+
 #endif 
 

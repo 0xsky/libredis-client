@@ -1,5 +1,4 @@
-# libredis-client
-xRedis   
+# libredis-client   
 [![Build Status](https://travis-ci.org/freeeyes/PSS.svg?branch=master)](https://travis-ci.org/freeeyes/PSS)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0 )
 [![GitHub version](https://badge.fury.io/gh/0xsky%2Fxredis.svg)](https://badge.fury.io/gh/0xsky%2Fxredis)
@@ -64,7 +63,7 @@ int main(int argc, char **argv) {
 
 
 
-<p>blog: <a href="http://www.0xsky.com/">xSky's Blog</a>
-<p>xRedis QQ Group: 190107312
+<p>Blog: <a href="http://www.0xsky.com/">xSky's Blog</a>
+<p>Redis QQ Group: 190107312
 
 
