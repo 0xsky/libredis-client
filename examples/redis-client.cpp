@@ -8,7 +8,7 @@ using std::cin;
 
 #include "libredis-client.h"
 
-static int str2Vect(const char* pSrc, vector<string> &vDest, const char *pSep = ",") {
+static int str2Vect(const char* pSrc, std::vector<std::string> &vDest, const char *pSep = ",") {
     if (NULL == pSrc) {
         return -1;
     }
@@ -39,7 +39,7 @@ static int str2Vect(const char* pSrc, vector<string> &vDest, const char *pSep = 
 int main(int argc, char **argv) {
 
     if (2!= argc){
-        printf("%s host port", argv[0]);
+        printf("Usage:%s host port\r\n", argv[0]);
         return -1;
     }
 
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
             VSTRING vDataIn;
 
             str2Vect(strInput.c_str(), vDataIn, " ");
-            redisclient.RedisCommandArgv(vDataIn, result);
+            redisclient.CommandArgv(vDataIn, result);
 
             switch (result.type()){
             case REDIS_REPLY_INTEGER:{ printf("%lld \r\n", result.integer()); break; }
