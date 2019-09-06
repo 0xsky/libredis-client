@@ -355,17 +355,20 @@ bool RedisClient::ConnectRedis(const char *host, uint32_t port, uint32_t poolsiz
     printf("ClusterEnabled %d \r\n", mClusterEnabled);
 
     if (!mClusterEnabled) {
+        redisFree(redis_ctx);
         mRedisConnList = new RedisConnectionList[1];
         ConnectRedisNode(0, host, port, mPoolSize);
         return true;
     }
 
     if(!ClusterStatus(redis_ctx)) {
+        redisFree(redis_ctx);
         printf("Clusterinfo error \r\n");
         return false;
     }
     
     if (!GetClusterNodes(redis_ctx)) {
+        redisFree(redis_ctx);
         return false;
     }
 
