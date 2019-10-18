@@ -115,6 +115,7 @@ private:
     RedisConnection *FindNodeConnection(const char *key);
 
 private:
+    bool GetClusterEnter();
     typedef std::vector<NodeInfo> NODELIST;
 private:
     RedisConnectionList   *mRedisConnList;
@@ -122,7 +123,7 @@ private:
     uint32_t               mPoolSize;
     NODELIST               mClusterNodes;
     bool                   mClusterEnabled;
-    
+    RedisConnection        mConn;
 };
 
 

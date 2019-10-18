@@ -273,6 +273,14 @@ void RedisClient::Release()
 #define REDIS_REPLY_NIL 4
 #define REDIS_REPLY_STATUS 5
 #define REDIS_REPLY_ERROR 6
+#define REDIS_REPLY_DOUBLE 7
+#define REDIS_REPLY_BOOL 8
+#define REDIS_REPLY_VERB 9
+#define REDIS_REPLY_MAP 9
+#define REDIS_REPLY_SET 10
+#define REDIS_REPLY_ATTR 11
+#define REDIS_REPLY_PUSH 12
+#define REDIS_REPLY_BIGNUM 13
 
 bool RedisClient::CheckReply(redisReply *reply)
 {
@@ -297,7 +305,7 @@ bool RedisClient::ClusterEnabled(redisContext *ctx)
     }
     //printf("redis info:\r\n%s\r\n", redis_reply->str);
     char *p = strstr(redis_reply->str, "cluster_enabled:");
-    bool bRet = (0 == strncmp(p + strlen("cluster_enabled:"), "1", 1));
+    bool bRet = p != NULL && (0 == strncmp(p + strlen("cluster_enabled:"), "1", 1));
     //printf("--:%s\r\n", p + strlen("cluster_enabled:"));
     freeReplyObject(redis_reply);
     return bRet;
@@ -321,9 +329,11 @@ bool RedisClient::ClusterStatus(redisContext *ctx)
 
 bool RedisClient::ReConnectRedis(RedisConnection *pConn)
 {   
-    Release();
-
-    return ConnectRedis(pConn->mHost, pConn->mPort, pConn->mPoolSize);
+    if (GetClusterEnter()) {
+	    Release();
+    	return ConnectRedis(pConn->mHost, pConn->mPort, pConn->mPoolSize);
+	}
+    return false;
 }
 
 bool RedisClient::ConnectRedis(const char *host, uint32_t port, uint32_t poolsize)
@@ -351,12 +361,17 @@ bool RedisClient::ConnectRedis(const char *host, uint32_t port, uint32_t poolsiz
         printf("Connect to Redis: %s:%d  success \n", host, port);
     }
 
+    mConn.mHost = host;
+    mConn.mPort = port;
+    mConn.mPoolSize = poolsize;
+
     mClusterEnabled = ClusterEnabled(redis_ctx);
     printf("ClusterEnabled %d \r\n", mClusterEnabled);
 
     if (!mClusterEnabled) {
         redisFree(redis_ctx);
         mRedisConnList = new RedisConnectionList[1];
+        mLock = new xLock[1];
         ConnectRedisNode(0, host, port, mPoolSize);
         return true;
     }
@@ -582,5 +597,20 @@ bool RedisClient::CommandArgv(const VSTRING& vDataIn, RedisResult &result){
     return bRet;
 }
 
-
+bool RedisClient::GetClusterEnter()
+{
+    size_t node_count = mClusterNodes.size();
+    for (size_t i = 0; i < node_count; ++i) {
+        RedisConnection *pConn = GetConnection(i);
+        redisReply *reply = static_cast<redisReply *>(redisCommand(pConn->mCtx, "PING"));
+        bool bRet = (NULL != reply);
+        if (bRet) {
+            freeReplyObject(reply);
+            mConn.mHost = pConn->mHost;
+            mConn.mPort = pConn->mPort;
+            return true;
+        }
+    }
+    return false;
+}
 
